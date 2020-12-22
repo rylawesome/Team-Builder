@@ -10,29 +10,47 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employees = [];
+
+function init() {
+    //createHTML();
+    addEmployee();
+}
+
+function addEmployee() {
+    inquirer.prompt([{
+        name: 'name',
+        message: "Enter team member's name",
+        /* Pass your questions in here */
+        },
+        {
+        name: 'role',
+        type: "list",
+        message: "Select team member's role",
+        choices: [
+            "Manager",
+            "Intern",
+            "Engineer",
+            ]
+        },
+        {
+        name: "id",
+        message: "Enter team member ID",
+        },
+        {
+        name: "email",
+        message: "Enter team member email",
+        },
+    ])
+    .then(function({name, role, id, email}) {
+        
+        }])
+        // Use user feedback for... whatever!!
+    })
+}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-inquirer
-  .prompt([
-    {
-    name: 'checkEmployee',
-    message: 'What is your role?',
-    default: 'Employee',
-    /* Pass your questions in here */
-    },
-  ])
-  .then(answers => {
-    // Use user feedback for... whatever!!
-    console.info('Answer:', answers.checkEmployee);
-  })
-  .catch(error => {
-    if(error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else went wrong
-    }
-  });
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -43,6 +61,8 @@ inquirer
 // `output` folder. You can use the variable `outputPath` above target this location.
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
+
+init();
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
