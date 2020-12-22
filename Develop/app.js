@@ -13,13 +13,18 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-var inquirer = require('inquirer');
 inquirer
   .prompt([
+    {
+    name: 'checkEmployee',
+    message: 'What is your role?',
+    default: 'Employee',
     /* Pass your questions in here */
+    },
   ])
   .then(answers => {
     // Use user feedback for... whatever!!
+    console.info('Answer:', answers.checkEmployee);
   })
   .catch(error => {
     if(error.isTtyError) {
