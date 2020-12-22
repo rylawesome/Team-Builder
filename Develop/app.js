@@ -10,10 +10,10 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const employees = [];
+var employees = [];
 
 function init() {
-    //createHTML();
+    createHTML();
     addEmployee();
 }
 
@@ -43,10 +43,52 @@ function addEmployee() {
         },
     ])
     .then(function({name, role, id, email}) {
-        
+        let roleInfo = "";
+        if (role === "Engineer") {
+            roleInfo = "Github username";
+        }
+        else if (role === "Intern") {
+            roleInfo = "school name";
+        }
+        else if (role === "Manager") {
+            roleInfo = "office phone number";
+        }
+        inquirer.prompt([{
+            message: `Enter team member ${roleInfo}`,
+            name: "roleInfo"
+        },
+        {
+            type: "list",
+            message: "Add more members?",
+            choices: [
+                'yes',
+                'no'
+            ],
+            name: "moreMembers"
         }])
-        // Use user feedback for... whatever!!
-    })
+        .then(function({roleInfo, moreMembers}) {
+            let newMember;
+            if (role === "Engineer") {
+                newMember = new Engineer(name, id, email, roleInfo);
+            }
+            else if (role === "Intern") {
+                newMember = new Intern(name, id, email, roleInfo);
+            }
+            else if (role === "Manager") {
+                newMember = new Manager(name, id, email, roleInfo);
+            }
+            employees.push(newMember);
+            addHTML(newMember)
+            .then(function() {
+                if (moreMembers === "yes") {
+                    addEmployee();
+                }
+                else {
+                    completeHtml();
+                }
+            })
+        });
+    });
 }
 
 // Write code to use inquirer to gather information about the development team members,
@@ -55,6 +97,7 @@ function addEmployee() {
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
